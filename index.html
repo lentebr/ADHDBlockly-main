@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">  
+    
+    <title>ADHDBLockly</title>
+
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/grid.css">
+</head>
+
+<body>
+    <div class="header">
+        <p>ADHDBLockly</p>
+    </div>
+
+    <div class="grid">
+        <div class="box-1">
+            <p>Menu drop below</p>
+        </div>
+        <div class="box-2">
+            <div id="myBar" style="width:0%">0%</div>
+        </div>
+
+        <div class="box-3">
+            <button class="button" onclick="move()">Click Me</button>
+        </div>
+
+        <div class="box-4 menu">
+            <ul>
+                <li>The Flight</li>
+                <li>The City</li>
+                <li>The Island</li>
+                <li>The Food</li>
+            </ul>
+        </div>
+      
+        <div id="blocklyDiv" class="box-5"></div>
+
+        <div class="box-6 highlight">
+            <p>code display</p>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <script src="scripts/main.js"></script>
+    
+</body>
+</html>
+<!-- from here on the code is for the pop-up box -->
+<head>
+	<title>Popup Example</title>
+	<style>
+		/* Center the popup box */
+		.popup {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 300px;
+			height: 200px;
+			padding: 20px;
+			background-color: white;
+			border: 1px solid black;
+			text-align: center;
+			visibility: hidden;
+		}
+
+		/* Style the title */
+		.popup h1 {
+			font-size: 24px;
+			margin-top: 0;
+		}
+
+		/* Style the message */
+		.popup p {
+			font-size: 18px;
+		}
+
+		/* Style the button */
+		.popup button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: blue;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+
+		/* Style the timer */
+		.timer {
+			position: fixed;
+			top: 0;
+			left: 40px;
+			padding: 10px;
+			background-color: rgb(156, 251, 162);
+			color: rgb(0, 0, 0);
+			font-size: 18px;
+		}
+        		/* Style the dropdown menu */
+		.dropdown {
+			position: fixed;
+			top: 0;
+			right: 0;
+			padding: 10px;
+			background-color: gray;
+			color: white;
+			font-size: 18px;
+		}
+
+		.dropdown select {
+			font-size: 18px;
+			padding: 5px 10px;
+			border: none;
+			background-color: white;
+			color: black;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="popup" id="popup">
+		<h1>Time's Up!</h1>
+		<p>Time to relax</p>
+		<button onclick="closepopup()">I want to continue</button>
+	</div>
+
+	<div class="timer" id="timer"></div>
+
+	<div class="dropdown">
+		<label for="disappear-dropdown">Focus time:</label>
+		<select id="disappear-dropdown" onchange="setDisappearTime()">
+			<option value="5">5 seconds</option>
+			<option value="10" selected>10 seconds</option>
+			<option value="15">15 seconds</option>
+		</select>
+
+		<label for="appear-dropdown">Relax time:</label>
+		<select id="appear-dropdown" onchange="setAppearTime()">
+			<option value="5" selected>5 seconds</option>
+			<option value="10">10 seconds</option>
+			<option value="15">15 seconds</option>
+		</select>
+	</div>
+
+    <script>
+		var disappearTime = 10000; // 10 seconds by default
+		var appearTime = 5000; // 5 seconds by default
+
+        
+        function setAppearTime() {
+        var dropdown = document.getElementById("appear-dropdown");
+        appearTime = dropdown.value;
+        }
+        function setDisappearTime() {
+        var dropdown = document.getElementById("disappear-dropdown");
+        disappearTime = dropdown.value;
+        }
+        
+		// Show the popup after the specified appear time and reset the timer
+		setTimeout(function() {
+			document.getElementById("popup").style.visibility = "visible";
+            resetTimer();
+            setTimeout(closepopup, disappearTime);
+        });
+
+
+		// Close the popup and show it again after the specified disappear time
+		function closepopup() {
+            resetTimer();
+			document.getElementById("popup").style.visibility = "hidden";
+			setTimeout(function() {
+				document.getElementById("popup").style.visibility = "visible";
+                resetTimer()
+                setTimeout (closepopup, disappearTime);
+            }, appearTime)
+        }    
+		// Update the timer every second
+		function updateTimer() {
+			var timer = document.getElementById("timer");
+			var time = parseFloat(timer.innerText);
+			timer.innerText = (time + 1).toFixed(1);
+		}
+		setInterval(updateTimer, 1000);
+
+		// Reset the timer
+		function resetTimer() {
+			var timer = document.getElementById("timer");
+			timer.innerText = "0.0";
+		}
+</script>
+</body>
+</html>
